@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Students</title>
+</head>
+<body> 
+   <% for(let u of user) { %>               
+    <h2>ID: <%= u.id %></h2>
+    <h3>Name: <%= u.fullname %></h3>
+    <h3>Roll Number: <%= u.rollnumber %></h3>
+    <h3>Class: <%= u.class %></h3>
+    <h3>Grade: <%= u.grade %></h3>
+    <a href="/users/<%= u.id %>">Show Details</a>
+    <hr>
+  <% } %>
+</body>
+</html>
