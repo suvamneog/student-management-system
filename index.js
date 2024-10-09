@@ -23,6 +23,74 @@ let getRandomUser = () => {
     faker.helpers.arrayElement(["A", "B", "C", "D", "F"]), //Grade
   ];
 };
+//add student page
+app.get("/users/add",(req,res) => {
+    let randomId = faker.string.uuid();
+    res.render("add.ejs",{ id: randomId });
+});
+
+//submit add student
+app.post("/users/add",(req,res) => {
+    let {id, fullname, rollnumber, class: userClass, grade} = req.body;
+    let q = `INSERT INTO users (id, fullname, rollnumber, \`class\`, grade) VALUES (?, ?, ?, ?, ?)`;
+try {
+    connection.query(q,[id, fullname, rollnumber ,userClass, grade],(err,result) => {
+        if (err) throw err;
+        res.redirect("/users");
+        console.log(result);
+    } )
+}
+catch(err) {
+console.log(err);
+res.send("error");
+}
+});
+
+//edit student page
+app.get("/users/:id/edit",(req,res) => {
+    let {id}=req.params;
+    let q = `SELECT * FROM users WHERE id = ?`;
+    try {
+        connection.query(q,[id],(err,result)=> {
+            if (err) throw err;
+            let user=result[0]
+            res.render("edit.ejs",{user});
+        });
+    }
+    catch (err) {
+        console.log(err);
+        res.send("error");
+    }
+});
+
+//submit edit student
+app.post("/users/:id",(req,res) => {
+    let {id} = req.params;
+    let {fullname : newFullName, rollnumber : newRollNumber, class : newUserClass, grade: newUserGrade} = req.body;
+    let q = `SELECT * FROM users WHERE id = ?`;
+    try {
+        connection.query(q,[id],(err,result) => {
+            let user=result[0];
+            if (err) throw err;
+            if (newRollNumber != user.rollnumber) {
+                res.send("Student not found");
+            } 
+            else {
+                let q2 ='UPDATE users SET fullname = ?, rollnumber = ?, `class` = ?, grade = ? WHERE id = ?';
+            connection.query(q2,[newFullName,newRollNumber,newUserClass,newUserGrade,id],(req,result)=> {
+                res.redirect("/users");
+            });
+        }
+    });
+}
+catch (err) {
+console.log(err);
+res.send("error");
+}
+}); 
+
+
+
 //show no. of students
 app.get("/", (req, res) => {
   let q = `SELECT count(*) FROM users`;
@@ -64,6 +132,7 @@ app.get("/users/:id",(req,res) => {
             if (err) throw err;
             let user = result[0];
             res.render("showuser.ejs",{user})
+            console.log(user);
         });
     }
     catch (err) {
@@ -71,6 +140,7 @@ app.get("/users/:id",(req,res) => {
         res.send("error");
     }
 });
+
 
 app.listen("8080", () => {
   console.log("server is listening to port 8080");

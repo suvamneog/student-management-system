@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add account</title>
+</head>
+<body>
+    <h2>ID: <%= id %> </h2>
+    <form method="POST" action="/users/add">
+        <input type="hidden" name="id" value="<%= id %>">
+        <input type="text" placeholder="Enter fullname" name="fullname" required/>
+        <input type="text" placeholder="Enter roll number" name="rollnumber" required/>
+        <input type="text" placeholder="Enter class" name="class" required/>
+        <input type="text" placeholder="Enter grade" name="grade" required/>
+        <button type="submit">Done</button>
+      </form>
+</body>
+</html>

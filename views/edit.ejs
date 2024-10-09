@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit student</title>
+</head>
+<body>
+    <h2>Edit student: <%= user.id %></h2>
+    <form method="POST" action="/users/<%= user.id %> ">
+        <textarea name="fullname"><%= user.fullname %></textarea>
+        <textarea name="rollnumber"><%= user.rollnumber %></textarea>
+        <textarea name="class"><%= user.class %></textarea>
+        <textarea name="grade"><%= user.grade %></textarea>
+        <button type="submit">Done</button>
+</body>
+</html>

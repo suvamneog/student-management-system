@@ -6,6 +6,7 @@
     <title>Show Students</title>
 </head>
 <body> 
+    <a href="/users/add"><button>Add</button></a>
    <% for(let u of user) { %>               
     <h2>ID: <%= u.id %></h2>
     <h3>Name: <%= u.fullname %></h3>
@@ -13,6 +14,7 @@
     <h3>Class: <%= u.class %></h3>
     <h3>Grade: <%= u.grade %></h3>
     <a href="/users/<%= u.id %>">Show Details</a>
+    <a href="/users/<%=u.id%>/edit"><button>edit</button></a>
     <hr>
   <% } %>
 </body>
