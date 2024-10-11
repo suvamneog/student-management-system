@@ -46,6 +46,8 @@ res.send("error");
 }
 });
 
+
+
 //edit student page
 app.get("/users/:id/edit",(req,res) => {
     let {id}=req.params;
@@ -141,6 +143,50 @@ app.get("/users/:id",(req,res) => {
     }
 });
 
+//Student delete page
+app.get("/users/:id/delete",(req,res) => {
+    let {id}=req.params;
+    let q = `SELECT * FROM users WHERE id = ?`;
+    try {
+        connection.query(q,[id],(err,result) => {
+            if (err) throw err;
+            let user = result[0];
+            res.render("delete.ejs",{user});
+        });
+    }
+    catch(err) {
+        console.log(err);
+        res.send("error");
+    }
+});
+
+//submit delete form
+app.delete("/users/:id",(req,res)=> {
+    let {id}=req.params;
+    let{rollnumber:rollNumber}=req.body;
+    let q=`SELECT * FROM users WHERE id = ?`;
+    try {
+        connection.query(q,[id],(err,result)=> {
+            let user=result[0];
+            if (err) throw err;
+            if(rollNumber != user.rollnumber) {
+                res.send("Wrong roll number!");
+            }
+            else {
+                let q2 =`DELETE FROM users WHERE id = ?`;
+                connection.query(q2,[id],(err,result) => {
+                    res.redirect("/users");
+                    console.log(result);
+                })
+                
+            }
+        });
+    }
+        catch(err) {
+            console.log(err);
+            res.send("error");
+        }
+    });
 
 app.listen("8080", () => {
   console.log("server is listening to port 8080");
